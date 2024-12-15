@@ -31,8 +31,8 @@ def connect_to_prodev():
     try:
         connection = mysql.connector.connect(
             host='localhost',
-            user='gashu',
-            password='Gashahun2692$',
+            user='root',
+            password='your_password',
             database='ALX_prodev'
         )
         if connection.is_connected():
@@ -49,7 +49,7 @@ def create_table(connection):
             CREATE TABLE IF NOT EXISTS user_data (
                 user_id CHAR(36) PRIMARY KEY,
                 name VARCHAR(255) NOT NULL,
-                email VARCHAR(255) NOT NULL,
+                email VARCHAR(255) NOT NULL UNIQUE,
                 age DECIMAL(3, 0) NOT NULL
             );
         """)
@@ -72,7 +72,7 @@ def insert_data(connection, csv_file):
                     """
                     INSERT INTO user_data (user_id, name, email, age)
                     VALUES (%s, %s, %s, %s)
-                    ON DUPLICATE KEY UPDATE name = name;
+                    ON DUPLICATE KEY UPDATE name = VALUES(name);
                     """,
                     (user_id, name, email, age)
                 )
